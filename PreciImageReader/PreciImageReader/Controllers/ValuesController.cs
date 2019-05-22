@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using PreciImageReader.CustomExceptionHandler;
+using PreciImageReader.NlogTextFile;
 
 namespace PreciImageReader.Controllers
 {
@@ -11,6 +12,12 @@ namespace PreciImageReader.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+
+        private INlogger nlogger;
+        public ValuesController(INlogger logger)
+        {
+            this.nlogger = logger;
+        }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<string>> Get()
@@ -26,7 +33,7 @@ namespace PreciImageReader.Controllers
             return "value";
         }
 
-      
+        
 
         /// <summary>
         /// This GET method will be called when given as tilesource url in openseadragon will be given http://localhost:51553/Precipoint/ 
@@ -44,20 +51,25 @@ namespace PreciImageReader.Controllers
             Byte[] imageBytes = null;
             string imageDataAddress = @"C:\E Drive\Precipoint Coding Chellange\openseadragon-bin-2.4.0\openseadragon\dzc_output_files\";
 
+            nlogger.Information("Request has arrived to GET method ");   
+          
             try
             {
+                nlogger.Information("start Checking if the file exist ");
                 if (System.IO.File.Exists(imageDataAddress + folderID.ToString() + "\\" + ImageId))
                 {
+                    nlogger.Information("File found : started reading the file");
                     imageBytes = System.IO.File.ReadAllBytes(imageDataAddress + folderID.ToString() + "\\" + ImageId);
-
 
                 }
 
+                nlogger.Debug("Returning File");
                 return File(imageBytes, "image/jpeg");
             }
             
                 catch (Exception ex)
             {
+                nlogger.Error("File not found exception has been raised :catch block ");
                 throw new NotFoundCutomizedException("No Image found", $"Please check your folder path and " +
                     $"respective folder for  folderID:{folderID} and ImageId:{ImageId}");
             }

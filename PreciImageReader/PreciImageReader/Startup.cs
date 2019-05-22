@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -10,7 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using NLog;
 using PreciImageReader.CustomExceptionHandler;
+using PreciImageReader.NlogTextFile;
 
 namespace PreciImageReader
 {
@@ -18,6 +21,7 @@ namespace PreciImageReader
     {
         public Startup(IConfiguration configuration)
         {
+            LogManager.LoadConfiguration(System.String.Concat(Directory.GetCurrentDirectory(), "/nlog.config"));
             Configuration = configuration;
         }
 
@@ -27,6 +31,7 @@ namespace PreciImageReader
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddSingleton<INlogger, NloggerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
