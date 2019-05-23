@@ -49,7 +49,9 @@ namespace PreciImageReader.Controllers
         public ActionResult<string> Get(int folderID, string ImageId)
         {
             Byte[] imageBytes = null;
-            string imageDataAddress = @"C:\E Drive\Precipoint Coding Chellange\openseadragon-bin-2.4.0\openseadragon\dzc_output_files\";
+
+            //Add the address of the output files folder of image files
+            string imageDataAddress = @"C:\E Drive\Precipoint Coding Chellange\Testing\dzc_output_files\";
 
             nlogger.Information("Request has arrived to GET method ");   
           
