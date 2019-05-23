@@ -69,6 +69,7 @@ namespace PreciImageReader.Controllers
             
                 catch (Exception ex)
             {
+                //Save the logs in bin\Debug\netcoreapp2.1\ImageReaderLogs
                 nlogger.Error("File not found exception has been raised :catch block ");
                 throw new NotFoundCutomizedException("No Image found", $"Please check your folder path and " +
                     $"respective folder for  folderID:{folderID} and ImageId:{ImageId}");
